@@ -1,6 +1,8 @@
 <?php
 require 'db.php';
 
+$success = false;
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $name = $_POST['name'];
     $email = $_POST['email'];
@@ -10,14 +12,112 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt = $pdo->prepare($sql);
     
     if ($stmt->execute(['name' => $name, 'email' => $email, 'course' => $course])) {
-        echo "Student added successfully!";
+        $success = true;
     }
 }
 ?>
 
-<form method="POST">
-    <input type="text" name="name" placeholder="Full Name" required>
-    <input type="email" name="email" placeholder="Email" required>
-    <input type="text" name="course" placeholder="Course" required>
-    <button type="submit">Add Student</button>
-</form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Student - Student Management System</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding-top: 20px;
+        }
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.1) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        .form-container {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .btn {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark mb-4">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.php">📚 Student Manager</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.php">All Students</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="create.php">Add Student</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="form-container">
+            <?php if ($success): ?>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>✅ Success!</strong> Student added successfully!
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            <div class="text-center mb-3">
+                <a href="index.php" class="btn btn-primary">← Back to Students List</a>
+            </div>
+            <?php endif; ?>
+
+            <h1>➕ Add New Student</h1>
+            
+            <form method="POST">
+                <div class="form-group">
+                    <label for="name" class="form-label">Full Name</label>
+                    <input type="text" class="form-control form-control-lg" id="name" name="name" placeholder="Enter student name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input type="email" class="form-control form-control-lg" id="email" name="email" placeholder="Enter email address" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="course" class="form-label">Course</label>
+                    <input type="text" class="form-control form-control-lg" id="course" name="course" placeholder="Enter course name" required>
+                </div>
+                
+                <div class="d-grid gap-2 d-sm-flex justify-content-center mt-4">
+                    <button type="submit" class="btn btn-success btn-lg">✅ Add Student</button>
+                    <a href="index.php" class="btn btn-secondary btn-lg">← Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
