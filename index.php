@@ -29,18 +29,37 @@ $students = $stmt->fetchAll();
         }
         .container-main {
             background: white;
-            border-radius: 15px;
+            border-radius: 20px;
             padding: 30px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.18);
             margin-bottom: 30px;
         }
-        h1 {
+        .page-intro {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        .page-intro h1 {
             color: #333;
-            margin-bottom: 30px;
-            font-weight: bold;
+            font-weight: 800;
+            margin: 0;
+        }
+        .summary-card {
+            background: #f8f9ff;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        .summary-card strong {
+            font-size: 1rem;
+            color: #5e5ce6;
         }
         .table {
-            border-radius: 10px;
+            border-radius: 12px;
             overflow: hidden;
         }
         .table thead {
@@ -51,7 +70,13 @@ $students = $stmt->fetchAll();
             background-color: #f8f9fa;
         }
         .btn-sm {
-            margin: 0 3px;
+            margin: 0 3px 4px 0;
+        }
+        .footer-note {
+            text-align: center;
+            color: #6c757d;
+            margin-top: 20px;
+            font-size: 0.95rem;
         }
     </style>
 </head>
@@ -77,11 +102,29 @@ $students = $stmt->fetchAll();
 
     <div class="container">
         <div class="container-main">
-            <h1>📖 Student Records</h1>
-            
+            <div class="page-intro">
+                <div>
+                    <h1>📖 Student Records</h1>
+                    <p class="text-muted mb-0">Manage your student list with fast editing, deletion, and add actions.</p>
+                </div>
+                <a href="create.php" class="btn btn-primary btn-lg">+ Add New Student</a>
+            </div>
+
+            <div class="summary-card">
+                <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3">
+                    <div>
+                        <strong>Total students:</strong>
+                        <span class="badge bg-primary"><?= count($students) ?></span>
+                    </div>
+                    <div class="text-muted">
+                        Updated live from the database. Use action buttons to edit or remove records.
+                    </div>
+                </div>
+            </div>
+
             <?php if (count($students) > 0): ?>
             <div class="table-responsive">
-                <table class="table table-striped table-hover">
+                <table class="table table-striped table-hover align-middle">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -107,7 +150,6 @@ $students = $stmt->fetchAll();
                     </tbody>
                 </table>
             </div>
-            <a href="create.php" class="btn btn-primary btn-lg">+ Add New Student</a>
             <?php else: ?>
             <div class="alert alert-info">
                 <h5>No students found.</h5>
@@ -115,6 +157,7 @@ $students = $stmt->fetchAll();
             </div>
             <?php endif; ?>
         </div>
+        <div class="footer-note">Built for streamlined student record management.</div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
